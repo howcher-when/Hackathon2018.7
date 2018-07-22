@@ -1,4 +1,4 @@
-#include <Servo.h>
+//#include <Servo.h>
 #include <Arduino.h>
 #include <Wire.h>
 #include <SoftwareSerial.h>
@@ -20,41 +20,41 @@ void setup() {
   pinMode(ledPin, OUTPUT);
   pinMode(buttonPin, INPUT);
   servo_3_1.attach(port_3.pin1());
-  servo_3_1.write(45);
-  opened = false;
+  servo_3_1.write(135);
+  opened = true;
 }
 
 void loop() {
   if(opened) {
     if(!finger_test()) {
       servo_3_1.write(45);
+      delay(2000);
       alarm_close();
-      opened = true;
+      opened = false;
     }
   } else {
     if(finger_test() && cv_test()) {
       servo_3_1.write(135);
       delay(1000);
       alarm_open();
-      alarm_close();
       opened = true;
     }
   }
 }
 
 void alarm_open() {
-  for(int i = 0; i < 10; ++i) {
-    rgbled_6.setColor(0,255,0,0);
-    rgbled_6.show();
+  /*for(int i = 0; i < 10; ++i) {
+    //rgbled_6.setColor(0,255,0,0);
+    //rgbled_6.show();
     delay(500);
-    rgbled_6.setColor(0,0,150,150);
-    rgbled_6.show();
+    //rgbled_6.setColor(0,0,150,150);
+    //rgbled_6.show();
     delay(500);
     buzzerOn();
     delay(200);
     buzzerOff();
     delay(200);
-  }
+  }*/
 }
 
 void alarm_close() {
@@ -72,9 +72,15 @@ bool finger_test() {
 
 bool cv_test() {
   char ch = Serial.read();
+  //delay(100);
   if(ch == '1') {
+    rgbled_6.setColor(0,255,0,0);
+    rgbled_6.show();
     return true;
   } else {
+    rgbled_6.setColor(0,0,0,0);
+    rgbled_6.show();
     return false;
   }
 }
+

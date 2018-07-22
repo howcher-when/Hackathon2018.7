@@ -4,7 +4,8 @@ import cv2
 import serial
 
 video_capture = cv2.VideoCapture(0)
-ser = serial.Serial('/dev/ttyUSB1')
+ser = serial.Serial('/dev/ttyUSB0')
+ser.baudrate = 9600
 
 executor_img = []
 executor_face_encoding = []
@@ -17,7 +18,7 @@ face_locations = []
 face_encodings = []
 face_names = []
 process_this_frame = True
-
+a = 0
 while True:
     ret, frame = video_capture.read()
 
@@ -43,9 +44,11 @@ while True:
                 name = "unknown"
             face_names.append(name)
         if executor_exist:
-            ser.write(b'1')
-        else:
-            ser.write(b'0')
+            ser.write('a')
+            #a += 1
+            #print a;
+        #else:
+            #ser.write(b'0')
 
     process_this_frame = not process_this_frame
 
